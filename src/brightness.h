@@ -67,5 +67,5 @@ private:
 
     QMap<QString, QPair<int, QTimer*>> _pendingWrites;
 
-    void setBrightness(QString clazz, QString device, int value);
+    void setBrightness(const QString& clazz, const QString& device, int value);
 };

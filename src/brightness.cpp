@@ -3,6 +3,8 @@
 #include <iostream>
 #include <qregularexpression.h>
 
+static const QRegularExpression regex("^/sys/class/([^/]+)/([^/]+)/brightness$");
+
 Brightness::Brightness(QObject* parent)
 : QObject(parent)
 , _backlights(parseDir(QDir("/sys/class/backlight")))
@@ -20,8 +22,7 @@ Brightness::Brightness(QObject* parent)
             const int newVal = f.readAll().trimmed().toInt();
             f.close();
 
-            const QRegularExpression re("^/sys/class/([^/]+)/([^/]+)/brightness$");
-            if (const QRegularExpressionMatch match = re.match(path); match.hasMatch())
+            if (const QRegularExpressionMatch match = regex.match(path); match.hasMatch())
             {
                 const QString className = match.captured(1);  // backlight or leds
                 const QString deviceName = match.captured(2); // intel_backlight, etc.
@@ -55,14 +56,14 @@ void Brightness::brightnessAbsolute(const qreal value)
     }
 
     auto& entry = _backlights.first();
-    entry.current = value;
+    entry.current = static_cast<int>(value);
     setBrightness("backlight", entry.device, entry.current);
 }
 
 qreal Brightness::brightnessPercent()
 {
     if (_backlights.isEmpty()) return 0;
-    return _backlights.first().current / _backlights.first().max;
+    return static_cast<qreal>(_backlights.first().current) / _backlights.first().max;
 }
 
 void Brightness::brightnessPercent(const qreal value)
@@ -74,7 +75,7 @@ void Brightness::brightnessPercent(const qreal value)
     }
 
     auto& entry = _backlights.first();
-    entry.current = (value / 100) * entry.max;
+    entry.current = static_cast<int>((value / 100.0) * entry.max);
     setBrightness("backlight", entry.device, entry.current);
 }
 
@@ -99,14 +100,14 @@ void Brightness::brightnessLedAbsolute(const qreal value)
     }
 
     auto& entry = _leds.first();
-    entry.current = value;
-    setBrightness("backlight", entry.device, value);
+    entry.current = static_cast<int>(value);
+    setBrightness("backlight", entry.device, entry.current);
 }
 
 qreal Brightness::brightnessLedPercent()
 {
     if (_leds.isEmpty()) return 0;
-    return _leds.first().current / _leds.first().max;
+    return static_cast<qreal>(_leds.first().current) / _leds.first().max;
 }
 
 void Brightness::brightnessLedPercent(const qreal value)
@@ -118,7 +119,7 @@ void Brightness::brightnessLedPercent(const qreal value)
     }
 
     auto& entry = _leds.first();
-    entry.current = (value / 100) * entry.max;
+    entry.current = static_cast<int>((value / 100) * entry.max);
     setBrightness("backlight", entry.device, entry.current / entry.max);
 }
 
@@ -165,7 +166,7 @@ QMap<QString, Brightness::Entry> Brightness::parseDir(const QDir& dir)
     return controllers;
 }
 
-void Brightness::setBrightness(QString clazz, QString device, const int value)
+void Brightness::setBrightness(const QString& clazz, const QString& device, const int value)
 {
     constexpr int delay = 50;
 
