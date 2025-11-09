@@ -85,8 +85,6 @@ QString BrightnessEntry::classAsString(const Class clazz)
 
 void BrightnessEntry::requestSync()
 {
-    qInfo() << "Updating Brightness! ";
-
     const auto now = QDateTime::currentMSecsSinceEpoch();
     auto& [timeoutUntil, queuedValue, timer] = _sync;
 
@@ -167,8 +165,6 @@ Brightness::Brightness(QObject* parent)
 
     connect(&_watcher, &QFileSystemWatcher::fileChanged, this, [this](const QString& path)
     {
-        qInfo() << "File changed" << path;
-
         if (QFile f(path); f.open(QIODevice::ReadOnly))
         {
             const int newVal = f.readAll().trimmed().toInt();
