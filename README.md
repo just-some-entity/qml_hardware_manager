@@ -23,49 +23,50 @@ A Qt/QML module to monitor and control hardware on Linux.
 ## Currently Available Interfaces
 
 ### BrightnessController
-| Property | Type | Access | Description |
-|-----------|------|---------|-------------|
-| `updateDelay` | `int` | Read/Write | Delay between brightness updates (ms). |
-| `backlight` | `qreal` | Read/Write | Current backlight value. |
-| `backlightNormalized` | `qreal` | Read/Write | Backlight value normalized between 0 and 1. |
-| `backlightMax` | `qreal` | Read-only | Maximum backlight value. |
-| `backlights` | `QList<BrightnessEntry*>` | Read-only | List of available backlight devices. |
-| `leds` | `QList<BrightnessEntry*>` | Read-only | List of available LED devices. |
+| Property              | Type                      | Access      | Description                                 |
+|-----------------------|---------------------------|-------------|---------------------------------------------|
+| `updateDelay`         | `int`                     | Read/Write  | Delay between brightness updates (ms).      |
+| `backlight`           | `qreal`                   | Read/Write  | Current backlight value.                    |
+| `backlightNormalized` | `qreal`                   | Read/Write  | Backlight value normalized between 0 and 1. |
+| `backlightMax`        | `qreal`                   | Read-only   | Maximum backlight value.                    |
+| `backlights`          | `QList<BrightnessEntry*>` | Read-only   | List of available backlight devices.        |
+| `leds`                | `QList<BrightnessEntry*>` | Read-only   | List of available LED devices.              |
 
 
 ### BrightnessEntry
 
-| Property | Type | Access | Description |
-|-----------|------|---------|-------------|
-| `current` | `qreal` | Read/Write | Current brightness value. |
-| `currentNormalized` | `qreal` | Read/Write | Brightness value normalized between 0 and 1. |
-| `max` | `qreal` | Read-only | Maximum brightness value supported by the device. |
-| `id` | `QString` | Read-only | Unique identifier of the device. |
+| Property             | Type        | Access      | Description                                            |
+|----------------------|-------------|-------------|--------------------------------------------------------|
+| `current`            | `qreal`     | Read/Write  | Current brightness value.                              |
+| `currentNormalized`  | `qreal`     | Read/Write  | Brightness value normalized between 0 and 1.           |
+| `max`                | `qreal`     | Read-only   | Maximum brightness value supported by the device.      |
+| `id`                 | `QString`   | Read-only   | Unique identifier of the device.                       |
 
 
 ### CpuDataSampler (For simple monitoring tools)
 
-| Property | Type | Access | Description                                                                               |
-|-----------|------|---------|-------------------------------------------------------------------------------------------|
-| `name` | `string` | Read-only | Name of the CPU (e.g., `"Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz"`). |
-| `load1` | `qreal` | Read-only | System load average over 1 minute.                                                        |
-| `load5` | `qreal` | Read-only | System load average over 5 minutes.                                                       |
-| `load15` | `qreal` | Read-only | System load average over 15 minutes.                                                      |
-| `frequencyMin` | `qreal` | Read-only | First CPU's minimum frequency.                                                            |
-| `frequencyMax` | `qreal` | Read-only | First CPU's maximum frequency.                                                            |
-| `frequency` | `qreal` | Read-only | Current CPU frequency.                                                                    |
-| `temperature` | `qreal` | Read-only | Current CPU temperature.                                                                  |
-| `utilization` | `qreal` | Read-only | CPU utilization ratio (0–1).                                                              |
-| `powerDraw` | `qreal` | Read-only | Estimated CPU power draw in watts.                                                        |
+| Property       | Type     | Access     | Description                                                           |
+|----------------|----------|------------|-----------------------------------------------------------------------|
+| `name`         | `string` | Read-only  | Name of the CPU (e.g., `"Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz"`). |
+| `load1`        | `qreal`  | Read-only  | System load average over 1 minute.                                    |
+| `load5`        | `qreal`  | Read-only  | System load average over 5 minutes.                                   |
+| `load15`       | `qreal`  | Read-only  | System load average over 15 minutes.                                  |
+| `frequencyMin` | `qreal`  | Read-only  | First CPU's minimum frequency.                                        |
+| `frequencyMax` | `qreal`  | Read-only  | First CPU's maximum frequency.                                        |
+| `frequency`    | `qreal`  | Read-only  | Current CPU frequency.                                                |
+| `temperature`  | `qreal`  | Read-only  | Current CPU temperature.                                              |
+| `utilization`  | `qreal`  | Read-only  | CPU utilization ratio (0–1).                                          |
+| `powerDraw`    | `qreal`  | Read-only  | Estimated CPU power draw in watts.                                    |
+| `maxSamples`   | `int`    | Read/Write | Max number of data samples to collect                                 |
 
 ### CpuDataSnapshotModel Properties
 
-| Role | Type | Description |
-|------|------|-------------|
-| `Temperature` | `qreal` | Snapshot temperature value. |
-| `Frequency` | `qreal` | Snapshot frequency value. |
-| `Utilization` | `qreal` | Snapshot CPU utilization ratio. |
-| `PowerDraw` | `qreal` | Snapshot estimated power draw. |
+| Role          | Type      | Description                      |
+|---------------|-----------|----------------------------------|
+| `Temperature` | `qreal`   | Snapshot temperature value.      |
+| `Frequency`   | `qreal`   | Snapshot frequency value.        |
+| `Utilization` | `qreal`   | Snapshot CPU utilization ratio.  |
+| `PowerDraw`   | `qreal`   | Snapshot estimated power draw.   |
 
 ## Example Usage
 

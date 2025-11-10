@@ -99,6 +99,7 @@ class SimpleCpuDataSampler
     Q_PROPERTY(qreal load1  READ load1  NOTIFY dynamicChanged)
     Q_PROPERTY(qreal load5  READ load5  NOTIFY dynamicChanged)
     Q_PROPERTY(qreal load15 READ load15 NOTIFY dynamicChanged)
+    Q_PROPERTY(int maxSamples READ maxSamples NOTIFY staticChanged)
     Q_PROPERTY(QVector<SimpleCpuDataCoreEntry*> cores READ cores NOTIFY staticChanged)
     Q_INTERFACES(QQmlParserStatus)
     QML_NAMED_ELEMENT(CpuDataSampler)
@@ -110,12 +111,31 @@ public:
     [[nodiscard]] qreal load15() const;
     [[nodiscard]] const QVector<SimpleCpuDataCoreEntry*>& cores() const;
 
+    [[nodiscard]] int maxSamples() const
+    {
+        return _maxSamples;
+    }
+
+    void set_maxSamples(const int maxSamples)
+    {
+        if (_maxSamples == maxSamples) return;
+        _maxSamples = maxSamples;
+
+        _snapshots.maxSize(_maxSamples);
+        for (auto& core : _cores)
+            core->_snapshots.maxSize(_maxSamples);
+
+        emit staticChanged();
+    }
+
     void sample(const Data_Cpu& data);
 
     void classBegin() override;
     void componentComplete() override;
 
 private:
+    int _maxSamples = 50;
+
     QString _name = "N/A";
 
     qreal _load1  = 0.0;
