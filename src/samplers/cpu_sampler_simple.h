@@ -54,6 +54,7 @@ class SimpleCpuDataEntryBase : public QObject
     Q_PROPERTY(qreal frequencyMax READ frequencyMax NOTIFY staticChanged);
     Q_PROPERTY(qreal frequency    READ frequency    NOTIFY dynamicChanged);
     Q_PROPERTY(qreal temperature  READ temperature  NOTIFY dynamicChanged);
+    Q_PROPERTY(qreal utilization  READ utilization  NOTIFY dynamicChanged);
     Q_PROPERTY(qreal powerDraw    READ powerDraw    NOTIFY dynamicChanged);
 
     friend class SimpleCpuDataSampler;
@@ -98,7 +99,7 @@ class SimpleCpuDataSampler
     Q_PROPERTY(qreal load1  READ load1  NOTIFY dynamicChanged)
     Q_PROPERTY(qreal load5  READ load5  NOTIFY dynamicChanged)
     Q_PROPERTY(qreal load15 READ load15 NOTIFY dynamicChanged)
-    // Q_PROPERTY(QL<SimpleCpuDataCoreEntry*> cores READ cores NOTIFY staticChanged)
+    Q_PROPERTY(QVector<SimpleCpuDataCoreEntry*> cores READ cores NOTIFY staticChanged)
     Q_INTERFACES(QQmlParserStatus)
     QML_NAMED_ELEMENT(CpuDataSampler)
 

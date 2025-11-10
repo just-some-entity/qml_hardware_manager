@@ -23,6 +23,21 @@ struct Data_Cpu
         {
             return nice + system + idle + iowait + irq + softirq + steal + guest + guest_nice;
         }
+
+        Stats& operator+=(const Stats& other)
+        {
+            user       += other.user;
+            nice       += other.nice;
+            system     += other.system;
+            idle       += other.idle;
+            iowait     += other.iowait;
+            irq        += other.irq;
+            softirq    += other.softirq;
+            steal      += other.steal;
+            guest      += other.guest;
+            guest_nice += other.guest_nice;
+            return *this;
+        }
     };
 
     struct EntryBase

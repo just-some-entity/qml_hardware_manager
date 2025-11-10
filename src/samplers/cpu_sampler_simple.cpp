@@ -174,13 +174,14 @@ void SimpleCpuDataSampler::sample(const Data_Cpu& data)
 
     if (data.cpus.empty()) return;
 
-    auto& cpu = data.cpus.at(0);
+    // create mutable copy
+    Data_Cpu::CpuData cpuData = data.cpus[0];
 
-    importData(cpu, cpu.draw);
-    _name = cpu.name;
+    float accTemp = 0;
+    float accFreq = 0;
 
     qsizetype i = 0;
-    for (const auto& coreData : cpu.cores)
+    for (const auto& coreData : cpuData.cores)
     {
         if (_cores.size() <= i)
         {
@@ -195,8 +196,22 @@ void SimpleCpuDataSampler::sample(const Data_Cpu& data)
         else
             _cores.at(i)->importData(coreData);
 
+        accTemp += _cores.at(i)->temperature();
+        accFreq += _cores.at(i)->frequency();
+
+        cpuData.stats += coreData.stats;
+
+        cpuData.freqMin = _cores.at(i)->frequencyMin();
+        cpuData.freqMax = _cores.at(i)->frequencyMax();
+
         ++i;
     }
+
+    cpuData.freqNow = (accFreq / i) / 1000;
+    cpuData.temp    = accTemp / i ;
+
+    importData(cpuData, cpuData.draw);
+    _name = cpuData.name;
 
     emit dynamicChanged();
 }
